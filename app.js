@@ -131,8 +131,6 @@ var process = function() {
 		// TODO: Some of the words in the dictionary have uppercases, thus they'll never match <tom@tomrochette.com>
 		processedToken = processedToken.toLowerCase();
 
-		console.info('Searching for token "' + processedToken + '"');
-
 		var dictionaryIndex = dictionary[processedToken] !== undefined ? dictionary[processedToken] : null;
 		var displayIndex = dictionaryIndex === null ? '?' : dictionaryIndex;
 		var backgroundColor = dictionaryIndex === null ? '#FF0' : grayScale(dictionaryIndex);
@@ -163,7 +161,6 @@ var process = function() {
 			var dictionaryIndex = histogramData[token];
 			data.push([token, dictionaryIndex]);
 		}
-		console.log(data);
 		data = google.visualization.arrayToDataTable(data);
 
 		var options = {
