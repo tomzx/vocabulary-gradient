@@ -8,26 +8,7 @@ var clamp = function(value, minimum, maximum) {
 	return Math.max(0, Math.min(1, value));
 }
 
-var colorScale = function(max) {
-	var colors = [
-		'#FFF',
-		'#EEE',
-		'#DDD',
-		'#CCC',
-		'#BBB',
-		'#AAA',
-		'#999',
-		'#888',
-		'#777',
-		'#666',
-		'#555',
-		'#444',
-		'#333',
-		'#222',
-		'#111',
-		'#000',
-	];
-
+var colorScale = function(colors, max) {
 	return function(value) {
 		var ratio = clamp(value / max, 0, 1);
 		var index = Math.floor(ratio * colors.length);
@@ -35,7 +16,33 @@ var colorScale = function(max) {
 	};
 };
 
-var grayScale = colorScale(wordFrequencies.length);
+var grayScaleValues = [
+	'#FFF',
+	'#EEE',
+	'#DDD',
+	'#CCC',
+	'#BBB',
+	'#AAA',
+	'#999',
+	'#888',
+	'#777',
+	'#666',
+	'#555',
+	'#444',
+	'#333',
+	'#222',
+	'#111',
+	'#000',
+];
+
+var grayScale = colorScale(grayScaleValues, wordFrequencies.length);
+
+var fontScaleValues = [
+	'#000',
+	'#FFF',
+];
+
+var fontScale = colorScale(fontScaleValues, wordFrequencies.length);
 
 var Statistics = function() {
 	this.data = [];
@@ -82,6 +89,12 @@ Statistics.prototype.stdDev = function() {
 	return Math.sqrt(variance);
 };
 
+var htmlEncode = function(text) {
+	var textElement = document.createElement('text');
+	textElement.innerText = text;
+	return textElement.innerHTML;
+};
+
 google.charts.load("current", {packages:["corechart"]});
 
 // TODO: Strip punctuation from words <tom@tomrochette.com>
@@ -113,10 +126,11 @@ var process = function() {
 
 		console.info('Searching for token "' + processedToken + '"');
 
-		var dictionaryIndex = dictionary[processedToken] || null;
+		var dictionaryIndex = dictionary[processedToken] !== undefined ? dictionary[processedToken] : null;
 		var displayIndex = dictionaryIndex === null ? '?' : dictionaryIndex;
 		var backgroundColor = dictionaryIndex === null ? '#FF0' : grayScale(dictionaryIndex);
-		output.push('<span style="background: ' + backgroundColor + '">' + token + '</span>');
+		var foregroundColor = dictionaryIndex === null ? '#000' : fontScale(dictionaryIndex);
+		output.push('<span style="background: ' + backgroundColor + '; color: ' + foregroundColor + '">' + htmlEncode(token) + '</span>');
 		output.push('<sub>' + displayIndex + '</sub> ');
 
 		if (dictionaryIndex !== null) {

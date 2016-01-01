@@ -3,22 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Vocabulary gradient</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+	<style>
+		body {
+			font-family: 'Open Sans', sans-serif;
+		}
+	</style>
 </head>
 <body>
+	<h1>Enter the text you want to analyze</h1>
 	<textarea id="text" name="text" id="" rows="10" style="width: 100%;"></textarea>
 	<button onclick="process();">Submit</button>
 
+	<h1>Statistics</h1>
+	<div>The following statistics are based on the index of the word in the word frequency list. Lower index indicates that the word is more often used than higher index words. In other words, frequency(low index) > frequence(high index).</div>
 	<div id="statistics">
-		<div>Min: <span id="min"></span></div>
-		<div>Average: <span id="avg"></span></div>
-		<div>Max: <span id="max"></span></div>
-		<div>Std Dev: <span id="stddev"></span></div>
-		<div>Processed in <span id="processing-time"></span> s.</div>
+		<div>Min: <span id="min">∅</span></div>
+		<div>Average: <span id="avg">∅</span></div>
+		<div>Max: <span id="max">∅</span></div>
+		<div>Std Dev: <span id="stddev">∅</span></div>
+		<div>Processed in <span id="processing-time">∅</span> s.</div>
 		<div id="distribution" style="width: 100%; height: 500px;"></div>
 	</div>
 
 	<br/>
 
+	<h1>Text</h1>
 	<div id="processed-text"></div>
 
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
