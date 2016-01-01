@@ -4,6 +4,12 @@
 
 The word frequency list is based off wiktionary list of the 20000 most frequently used words in the Project Gutenberg (the frequency list as of 2006-04-16).
 
+## Getting started
+
+Simply open `index.html` in your browser and paste a text you would like to analyze. When you submit the form, the text you submitted will appear below and display the the index of the word (in subscript) based on its frequency. In other word, the closer you are to zero, the more frequently this word is used.
+
+Some words may not be found in the word frequency list and they will be highlighted in yellow and will display an index value of "?".
+
 ## Sources
 
 * https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2006/04/1-10000
