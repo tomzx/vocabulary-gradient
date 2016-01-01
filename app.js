@@ -1,6 +1,3 @@
-// TODO: Add a distribution graph <tom@tomrochette.com>
-// TODO: Basic statistics (min/max/average/median/stddev) <tom@tomrochette.com>
-
 var dictionary = {};
 for (var i = 0; i < wordFrequencies.length; ++i) {
 	var word = wordFrequencies[i];
@@ -46,7 +43,13 @@ var Statistics = function() {
 
 Statistics.prototype.add = function(value) {
 	this.data.push(value);
-}
+
+	return this;
+};
+
+Statistics.prototype.count = function() {
+	return this.data.length;
+};
 
 Statistics.prototype.min = function() {
 	return Math.min.apply(Math, this.data);
@@ -77,12 +80,15 @@ Statistics.prototype.variance = function() {
 Statistics.prototype.stdDev = function() {
 	var variance = this.variance();
 	return Math.sqrt(variance);
-}
+};
+
+google.charts.load("current", {packages:["corechart"]});
 
 // TODO: Strip punctuation from words <tom@tomrochette.com>
 var process = function() {
 	var startTime = new Date().getTime();
 	var statistics = new Statistics;
+	var histogramData = {};
 	var text = document.getElementById('text').value;
 
 	var tokens = text.split(/(\n|\s)/);
@@ -115,6 +121,7 @@ var process = function() {
 
 		if (dictionaryIndex !== null) {
 			statistics.add(dictionaryIndex);
+			histogramData[processedToken] = dictionary[processedToken];
 		}
 	}
 
@@ -127,4 +134,23 @@ var process = function() {
 	document.getElementById('stddev').innerHTML = Math.round(statistics.stdDev());
 
 	document.getElementById('processing-time').innerHTML = (new Date().getTime() - startTime) / 1000;
+
+	google.charts.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var data = [['Index', 'Index']];
+		for (var token in histogramData) {
+			var dictionaryIndex = histogramData[token];
+			data.push([token, dictionaryIndex]);
+		}
+		console.log(data);
+		data = google.visualization.arrayToDataTable(data);
+
+		var options = {
+			title: 'Index of used words, lower = more frequent',
+			legend: { position: 'none' },
+		};
+
+		var chart = new google.visualization.Histogram(document.getElementById('distribution'));
+		chart.draw(data, options);
+	}
 };
