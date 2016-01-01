@@ -1,7 +1,7 @@
-var dictionary = {};
-for (var i = 0; i < wordFrequencies.length; ++i) {
-	var word = wordFrequencies[i];
-	dictionary[word] = i;
+if(typeof String.prototype.trim !== 'function') {
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, '');
+	}
 }
 
 var clamp = function(value, minimum, maximum) {
@@ -90,10 +90,17 @@ Statistics.prototype.stdDev = function() {
 };
 
 var htmlEncode = function(text) {
-	var textElement = document.createElement('text');
-	textElement.innerText = text;
-	return textElement.innerHTML;
+	var container = document.createElement('div');
+	var textElement = document.createTextNode(text);
+	container.appendChild(textElement);
+	return container.innerHTML;
 };
+
+var dictionary = {};
+for (var i = 0; i < wordFrequencies.length; ++i) {
+	var word = wordFrequencies[i];
+	dictionary[word] = i;
+}
 
 google.charts.load("current", {packages:["corechart"]});
 
