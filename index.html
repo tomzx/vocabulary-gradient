@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Vocabulary gradient</title>
+</head>
+<body>
+	<textarea id="text" name="text" id="" rows="10" style="width: 100%;"></textarea>
+	<button onclick="process();">Submit</button>
+
+	<div id="statistics">
+		<div>Min: <span id="min"></span></div>
+		<div>Average: <span id="avg"></span></div>
+		<div>Max: <span id="max"></span></div>
+		<div>Std Dev: <span id="stddev"></span></div>
+		<div>Processed in <span id="processing-time"></span> s.</div>
+	</div>
+
+	<br/>
+
+	<div id="processed-text"></div>
+
+	<script type="text/javascript" src="word-frequencies.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
