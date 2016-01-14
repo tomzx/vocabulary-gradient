@@ -127,7 +127,7 @@ var process = function() {
 			continue;
 		}
 
-		var processedToken = token.replace(/[.,-\/#!?$%\^&\*;:{}=\-_`~()"]/g, '');
+		var processedToken = token.replace(/[.,\-\/#!?$%\^&\*;:{}=\-_`~\(\)\[\]"]/g, '');
 		// TODO: Some of the words in the dictionary have uppercases, thus they'll never match <tom@tomrochette.com>
 		processedToken = processedToken.toLowerCase();
 
