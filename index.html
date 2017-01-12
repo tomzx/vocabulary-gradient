@@ -9,6 +9,10 @@
 		body {
 			font-family: 'Open Sans', sans-serif;
 		}
+
+		#canvas {
+			border: solid 1px #000;
+		}
 	</style>
 </head>
 <body>
@@ -19,13 +23,18 @@
 	<h1>Statistics</h1>
 	<div>The following statistics are based on the index of the word in the word frequency list. Lower index indicates that the word is more often used than higher index words. In other words, frequency(low index) > frequency(high index).</div>
 	<div id="statistics">
-		<div>Min: <span id="min">∅</span></div>
-		<div>Average: <span id="avg">∅</span></div>
-		<div>Max: <span id="max">∅</span></div>
+		<div>Minimum index: <span id="min">∅</span></div>
+		<div>Average index: <span id="avg">∅</span></div>
+		<div>Maximum index: <span id="max">∅</span></div>
 		<div>Std Dev: <span id="stddev">∅</span></div>
+		<div>Word count: <span id="word-count">∅</span></div>
+		<div>Unique word count: <span id="unique-word-count">∅</span></div>
 		<div>Processed in <span id="processing-time">∅</span> s.</div>
 		<div id="distribution" style="width: 100%; height: 500px;"></div>
 	</div>
+
+	<h1>Vocabulary code</h1>
+	<div id="chart"></div>
 
 	<br/>
 
@@ -33,6 +42,8 @@
 	<div id="processed-text"></div>
 
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="d3.js"></script>
+	<script type="text/javascript" src="vocabulary-code.js"></script>
 	<script type="text/javascript" src="word-frequencies.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 </body>

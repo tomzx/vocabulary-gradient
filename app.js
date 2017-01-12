@@ -113,6 +113,12 @@ var process = function() {
 
 	var tokens = text.split(/(\n|\s)/);
 
+	var usedWords = [];
+	for (var i = 0; i < wordFrequencies.length; ++i) {
+		usedWords.push(false);
+	}
+	var wordCount = 0;
+
 	var output = [];
 	for (var i in tokens) {
 		var token = tokens[i];
@@ -132,6 +138,7 @@ var process = function() {
 		processedToken = processedToken.toLowerCase();
 
 		var dictionaryIndex = dictionary[processedToken] !== undefined ? dictionary[processedToken] : null;
+		usedWords[dictionaryIndex] = true;
 		var displayIndex = dictionaryIndex === null ? '?' : dictionaryIndex;
 		var backgroundColor = dictionaryIndex === null ? '#FF0' : grayScale(dictionaryIndex);
 		var foregroundColor = dictionaryIndex === null ? '#000' : fontScale(dictionaryIndex);
@@ -141,6 +148,7 @@ var process = function() {
 		if (dictionaryIndex !== null) {
 			statistics.add(dictionaryIndex);
 			histogramData[processedToken] = dictionary[processedToken];
+			++wordCount;
 		}
 	}
 
@@ -151,8 +159,11 @@ var process = function() {
 	document.getElementById('avg').innerHTML = Math.round(statistics.average());
 	document.getElementById('max').innerHTML = statistics.max();
 	document.getElementById('stddev').innerHTML = Math.round(statistics.stdDev());
+	document.getElementById('word-count').innerHTML = wordCount;
+	document.getElementById('unique-word-count').innerHTML = usedWords.filter(function(value) { return value; }).reduce(function(a, b) { return a + b; }, 0);
 
 	document.getElementById('processing-time').innerHTML = (new Date().getTime() - startTime) / 1000;
+	drawVocabularyCode(usedWords);
 
 	google.charts.setOnLoadCallback(drawChart);
 	function drawChart() {
