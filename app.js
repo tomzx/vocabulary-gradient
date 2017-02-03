@@ -59,11 +59,25 @@ Statistics.prototype.count = function() {
 };
 
 Statistics.prototype.min = function() {
-	return Math.min.apply(Math, this.data);
+	var length = this.data.length;
+	var min = Infinity;
+	while (length--) {
+		if (this.data[length] < min) {
+			min = this.data[length];
+		}
+	}
+	return min;
 };
 
 Statistics.prototype.max = function() {
-	return Math.max.apply(Math, this.data);
+	var length = this.data.length;
+	var max = -Infinity;
+	while (length--) {
+		if (this.data[length] > max) {
+			max = this.data[length];
+		}
+	}
+	return max;
 };
 
 Statistics.prototype.average = function() {
