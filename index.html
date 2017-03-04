@@ -25,10 +25,12 @@
 	<div id="statistics">
 		<div>Minimum index: <span id="min">∅</span></div>
 		<div>Average index: <span id="avg">∅</span></div>
+		<div>Median index: <span id="med">∅</span></div>
 		<div>Maximum index: <span id="max">∅</span></div>
 		<div>Std Dev: <span id="stddev">∅</span></div>
 		<div>Word count: <span id="word-count">∅</span></div>
 		<div>Unique word count: <span id="unique-word-count">∅</span></div>
+		<div>Fingerprint: <pre id="fingerprint">∅</pre></div>
 		<div>Processed in <span id="processing-time">∅</span> s.</div>
 		<div id="distribution" style="width: 100%; height: 500px;"></div>
 	</div>
@@ -39,10 +41,12 @@
 	<br/>
 
 	<h1>Text</h1>
+	<div>The following section displays the text you have input, colored according to the expected frequency of the word, white/light being very frequent words while black/dark represents infrequent words. In yellow are displayed the words that are not part of the known frequency dictionary.</div>
 	<div id="processed-text"></div>
 
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript" src="d3.js"></script>
+	<script type="text/javascript" src="big.js"></script>
 	<script type="text/javascript" src="vocabulary-code.js"></script>
 	<script type="text/javascript" src="word-frequencies.js"></script>
 	<script type="text/javascript" src="app.js"></script>

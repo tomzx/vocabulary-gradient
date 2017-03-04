@@ -81,11 +81,24 @@ Statistics.prototype.max = function() {
 };
 
 Statistics.prototype.average = function() {
-	var sum = 0;
-	for (var i in this.data) {
-		sum += this.data[i];
+	if (this.data.length === 0) {
+		return 0;
 	}
-	return sum / this.data.length;
+	var sum = new Big(0);
+	for (var i  = 0; i < this.data.length; ++i) {
+		sum = sum.plus(this.data[i]);
+	}
+	return sum.div(this.data.length);
+};
+
+Statistics.prototype.median = function() {
+	var sortedData = this.data.sort(function (a, b) { return a - b; });
+	var lengthIsEven = (this.data.length & 1) === 0;
+	if (lengthIsEven) {
+		return (sortedData[this.data.length/2 - 1] + sortedData[this.data.length/2]) / 2;
+	} else {
+		return sortedData[(this.data.length-1)/2];
+	}
 };
 
 Statistics.prototype.variance = function() {
@@ -108,6 +121,40 @@ var htmlEncode = function(text) {
 	var textElement = document.createTextNode(text);
 	container.appendChild(textElement);
 	return container.innerHTML;
+};
+
+var computeFingerprint = function(data) {
+	var length = data.length;
+	var count = 0;
+	var currentSymbol = null;
+	var output = '';
+	for (var i = 0; i < length; ++i) {
+		if (data[i] === currentSymbol) {
+			++count;
+		} else {
+			if (currentSymbol !== null) {
+				output += count + (currentSymbol ? "t" : "f");
+			}
+			count = 1;
+		}
+		currentSymbol = data[i];
+	}
+
+	if (currentSymbol !== null) {
+		output += count + (currentSymbol ? "t" : "f");
+	}
+
+	return output;
+};
+
+var prettyPrintFingerprint = function(fingerprint) {
+	var length = fingerprint.length;
+	var charactersPerLine = 80;
+	var output = '';
+	for (var i = 0; i < length; i += charactersPerLine) {
+		output += fingerprint.substr(i, charactersPerLine) + '<br/>';
+	}
+	return output;
 };
 
 var dictionary = {};
@@ -151,7 +198,7 @@ var process = function() {
 		// TODO: Some of the words in the dictionary have uppercases, thus they'll never match <tom@tomrochette.com>
 		processedToken = processedToken.toLowerCase();
 
-		var dictionaryIndex = dictionary[processedToken] !== undefined ? dictionary[processedToken] : null;
+		var dictionaryIndex = dictionary.hasOwnProperty(processedToken) ? dictionary[processedToken] : null;
 		usedWords[dictionaryIndex] = true;
 		var displayIndex = dictionaryIndex === null ? '?' : dictionaryIndex;
 		var backgroundColor = dictionaryIndex === null ? '#FF0' : grayScale(dictionaryIndex);
@@ -171,10 +218,12 @@ var process = function() {
 
 	document.getElementById('min').innerHTML = statistics.min();
 	document.getElementById('avg').innerHTML = Math.round(statistics.average());
+	document.getElementById('med').innerHTML = Math.round(statistics.median());
 	document.getElementById('max').innerHTML = statistics.max();
 	document.getElementById('stddev').innerHTML = Math.round(statistics.stdDev());
 	document.getElementById('word-count').innerHTML = wordCount;
 	document.getElementById('unique-word-count').innerHTML = usedWords.filter(function(value) { return value; }).reduce(function(a, b) { return a + b; }, 0);
+	document.getElementById('fingerprint').innerHTML = prettyPrintFingerprint(computeFingerprint(usedWords));
 
 	document.getElementById('processing-time').innerHTML = (new Date().getTime() - startTime) / 1000;
 	drawVocabularyCode(usedWords);
